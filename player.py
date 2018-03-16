@@ -10,7 +10,7 @@ class Player:
         self.x = world.start_tile_location[0]
         self.y = world.start_tile_location[1]
         self.hp = 150
-        self.gold = 5
+        self.gold = 15
         self.victory = False
 
     def is_alive(self):
@@ -20,7 +20,8 @@ class Player:
         print ("Inventory:")
         for item in self.inventory:
             print('* ' + str(item))
-        print("Gold: {}".format(self.gold))
+        print("- Gold: {}".format(self.gold))
+        print("- Health Points: {}".format(self.hp))
 
     def heal(self):
         consumables = [item for item in self.inventory
@@ -93,3 +94,6 @@ class Player:
     def add_item(self):
         room = world.tile_at(self.x, self.y)
         room.encounter_fruit(self)
+
+    def drop_loot(self):
+        room = world.tile_at(self.x, self.y)

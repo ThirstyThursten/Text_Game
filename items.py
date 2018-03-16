@@ -74,3 +74,27 @@ class Toadstools(Consumable):
         self.name = "Toadstools"
         self.healing_value = -5
         self.value = 10
+
+class BunnyMeat(Consumable):
+    def __init__(self):
+        self.name = "Bunny meat"
+        self.healing_value = 25
+        self.value = 20
+
+class WolfMeat(Consumable):
+    def __init__(self):
+        self.name = "Wolf meat"
+        self.healing_value = 45
+        self.value = 35
+
+class FoxMeat(Consumable):
+    def __init__(self):
+        self.name = "Fox meat"
+        self.healing_value = 35
+        self.value = 25
+
+class BearMeat(Consumable):
+    def __init__(self):
+        self.name = "Bear meat"
+        self.healing_value = 45
+        self.value = 35

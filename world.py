@@ -14,9 +14,6 @@ class MapTile:
     def modify_player(self, player):
         pass
 
-    def add_item(self, player):
-        pass
-
 class StartTile(MapTile):
     def intro_text(self):
         return """
@@ -29,27 +26,34 @@ class StartTile(MapTile):
 class EnemyTile(MapTile):
     def __init__(self, x, y):
         r = random.random()
-        if r < 0.30:
+        if r < 0.40:
             self.enemy = enemies.Bunny()
             self.alive_text = "A cute little bunny crossed your path! " \
                                 "It should be slain before you can continue.."
             self.dead_text = "The dead bunny is just laying there, bleeding.."
-        elif r < 0.50:
+            self.loot = items.BunnyMeat()
+
+        elif r < 0.55:
             self.enemy = enemies.RedFox()
             self.alive_text = "A red fox strides across from you!"
             self.dead_text = "The blood of the dead fox mixes well with its fur.."
+            self.loot = items.FoxMeat()
+
         elif r < 0.70:
             self.enemy = enemies.GrayWolf()
             self.alive_text = "You hear a wolf howling, " \
                                 "as it gets ready to attack you.."
             self.dead_text = "You try to catch your breath while standing over " \
                                 "the wolfs bleeding corpse.."
+            self.loot = items.WolfMeat()
+
         else:
             self.enemy = enemies.BrownBear()
             self.alive_text = "You hear a loud thudding and a boisterous growl.. " \
                                 "A bear stands in front of you.."
             self.dead_text = "You swipe the dust off of your clothes as you feel victorious " \
                                 "Looking at the dead pile of bear meat.."
+            self.loot = items.BearMeat()
 
         super().__init__(x, y)
 
@@ -58,9 +62,14 @@ class EnemyTile(MapTile):
         return text
 
     def modify_player(self, player):
+        loot_chance = random.random()
         if self.enemy.is_alive():
             player.hp = player.hp - self.enemy.damage
             print("Enemy does {} damage. You have {} HP remaining.".format(self.enemy.damage, player.hp))
+        elif loot_chance < 0.60 and not self.enemy.is_alive():
+            player.inventory.append(self.loot)
+            print(" The {} dropped {} it's been added to your inventory.".format(self.enemy, self.loot.name))
+
 
 class ForagingTile(MapTile):
     def __init__(self, x, y):
@@ -88,6 +97,7 @@ class ForagingTile(MapTile):
                                         "You must forge onwards."
 
         super().__init__(x, y)
+
     def modify_player(self, player):
         if not self.item_claimed:
             self.item_claimed = True
@@ -157,10 +167,12 @@ class MerchantTile(MapTile):
             if user_input in ['Q', 'q']:
                 return
             elif user_input in ['B', 'b']:
+                print("You can spend: {}".format(player.gold))
                 print("Here's whats available to buy: ")
                 self.trade(buyer=player, seller=self.merchant)
             elif user_input in ['S', 's']:
-                print("Here's whats available to sell: ")
+                print("This is what I can afford: {}".format(self.merchant.gold))
+                print("And here's what you can sell: ")
                 self.trade(buyer=self.merchant, seller=player)
             else:
                 print("Invalid choice!")
@@ -209,10 +221,12 @@ class BlackSmithTile(MapTile):
             if user_input in ['Q', 'q']:
                 return
             elif user_input in ['B', 'b']:
+                print("Your Gold: {}".format(player.gold))
                 print("Here's what I got available for purchase: ")
                 self.trade(buyer=player, seller=self.blacksmith)
             elif user_input in ['S', 's']:
-                print("This is what I've got for sale:")
+                print("Here's how much I have to spend: {}".format(self.blacksmith.gold))
+                print("And this is what you can sell:")
                 self.trade(buyer=self.blacksmith, seller=player)
             else:
                 print("Invalid choice!")

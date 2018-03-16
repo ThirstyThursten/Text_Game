@@ -1,8 +1,19 @@
+Alpha v.1.1
+  Dev Notes:
+
+  New Content:
+  - Added Loot, Enemies drop loot per chance
+  - Inventory now shows Health Points
+  - Trading menu's show available Gold
+
+
 Alpha v.1.0
   Dev Notes:
 
   New Content:
-  - 
+  - Added Forage Tile (Find Consumables)
+  - Added Forage Tiles to world_map
+  - World_map is now bigger and changed, for more variation
 
 
 Alpha v.0.2

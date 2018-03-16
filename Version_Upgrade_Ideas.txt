@@ -11,3 +11,4 @@ Alpha v.1.0
  - Choices Enemies: (Kill? Run?)
  - Fisherman sell bait for hunting?
  - Enemies drop loot
+ - Crafting

@@ -23,7 +23,7 @@ class GrayWolf(Enemy):
 class Bunny(Enemy):
     def __init__(self):
         self.name = "Bunny"
-        self.hp = 10
+        self.hp = 5
         self.damage = 3
 
 class RedFox(Enemy):
