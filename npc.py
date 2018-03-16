@@ -15,8 +15,14 @@ class Merchant(NonPlayableCharacter):
         self.gold = 100
         self.inventory = [items.CrustyBread(),
                             items.Raspberries(),
-                            items.Raspberries(),
                             items.BlueBerries(),
-                            items.BlueBerries(),
-                            items.Toadstools(),
                             items.Toadstools(),]
+
+class BlackSmith(NonPlayableCharacter):
+    def __init__(self):
+        self.name = "Blacksmith"
+        self.gold = 120
+        self.inventory = [items.Dagger(),
+                            items.RustySword(),
+                            items.Axe(),
+                            items.CrossBow(),]

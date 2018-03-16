@@ -61,16 +61,16 @@ class BlueBerries(Consumable):
     def __init__(self):
         self.name = "Blue Berries"
         self.healing_value = 18
-        self.value = 10
+        self.value = 15
 
 class Raspberries(Consumable):
     def __init__(self):
         self.name = "Raspberries"
         self.healing_value = 10
-        self.value = 5
+        self.value = 10
 
 class Toadstools(Consumable):
     def __init__(self):
         self.name = "Toadstools"
         self.healing_value = -5
-        self.value = 4
+        self.value = 10

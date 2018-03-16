@@ -83,7 +83,7 @@ class VictoryTile(MapTile):
 
 class FindGoldTile(MapTile):
     def __init__(self, x, y):
-        self.gold = random.randint(1, 75)
+        self.gold = random.randint(18, 75)
         self.gold_claimed = False
         super().__init__(x, y)
 
@@ -146,7 +146,7 @@ class MerchantTile(MapTile):
         buyer.inventory.append(item)
         seller.gold = seller.gold + item.value
         buyer.gold = buyer.gold - item.value
-        print("Trade complete!")
+        print("Pleasure doing bussiness with you!")
 
     def intro_text(self):
         return """
@@ -155,10 +155,64 @@ class MerchantTile(MapTile):
         He looks willing to trade.
         """
 
+class BlackSmithTile(MapTile):
+    def __init__(self, x, y):
+        self.blacksmith = npc.BlackSmith()
+        super().__init__(x, y)
+
+    def check_if_trade(self, player):
+        while True:
+            print("Would you like to (B)uy, (S)ell, or (Q)uit?")
+            user_input = input()
+            if user_input in ['Q', 'q']:
+                return
+            elif user_input in ['B', 'b']:
+                print("Here's what I got available for purchase: ")
+                self.trade(buyer=player, seller=self.blacksmith)
+            elif user_input in ['S', 's']:
+                print("This is what I've got for sale:")
+                self.trade(buyer=blacksmith, seller=player)
+            else:
+                print("Invalid choice!")
+
+    def trade(self, buyer, seller):
+        for i, item in enumerate(seller.inventory, 1):
+            print("{}. {} - {} Gold".format(i, item.name, item.value))
+        while True:
+            user_input = input("Choose an item or press Q to exit.")
+            if user_input in ['Q', 'q']:
+                return
+            else:
+                try:
+                    choice = int(user_input)
+                    to_swap = seller.inventory[choice - 1]
+                    self.swap(seller, buyer, to_swap)
+                except ValueError:
+                    print("Invalid choice!")
+
+    def swap(self, seller, buyer, item):
+        if item.value > buyer.gold:
+            print("Sorry that's not enough gold.")
+            return
+        seller.inventory.remove(item)
+        buyer.inventory.append(item)
+        seller.gold = seller.gold + item.value
+        buyer.gold = buyer.gold - item.value
+        print("Thanks for the bussiness!")
+
+    def intro_text(self):
+        return """
+        You come across a little cabin,
+        it has a hot fire burning in some sort of oven.
+        A man is busy forging some metal,
+        in what seems to become a sword.
+        The Blacksmith seems to be willing to trade.
+        """
+
 
 world_dsl = """
-|EN|EN|VT|EN|EN|
-|EN|  |  |  |EN|
+|EN|EN|VT|EN|FG|
+|BT|  |  |BT|EN|
 |EN|FG|EN|  |MT|
 |MT|EN|ST|FG|EN|
 |FG|  |  |  |FG|
@@ -181,6 +235,7 @@ tile_type_dict = {"VT": VictoryTile,
                     "ST": StartTile,
                     "FG": FindGoldTile,
                     "MT": MerchantTile,
+                    "BT": BlackSmithTile,
                     "  ": None}
 
 world_map = []

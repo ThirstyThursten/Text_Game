@@ -37,6 +37,8 @@ def get_available_actions(room, player):
         action_adder(actions, 'i', player.print_inventory, "Print Inventory")
     if isinstance(room, world.MerchantTile):
         action_adder(actions, 't', player.trade, "Trade")
+    if isinstance(room, world.BlackSmithTile):
+        action_adder(actions, 't', player.trade, "Trade")
     if isinstance(room, world.EnemyTile) and room.enemy.is_alive():
         action_adder(actions, 'a', player.attack, "Attack")
     else:

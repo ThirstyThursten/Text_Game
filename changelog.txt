@@ -1,0 +1,13 @@
+Alpha v.0.2
+  Dev Notes:
+
+
+  New Content:
+  - Added Blacksmith NPC
+  - Added Blacksmith Tiles to world_map instead of EnemyTiles
+  - Added extra FindGold Tile to world_map instead of EnemyTile
+
+Alpha v.0.1
+  Dev Notes:
+  - Initial build of game
+  - First working model
