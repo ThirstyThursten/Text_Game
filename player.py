@@ -89,3 +89,7 @@ class Player:
     def trade(self):
         room = world.tile_at(self.x, self.y)
         room.check_if_trade(self)
+
+    def add_item(self):
+        room = world.tile_at(self.x, self.y)
+        room.encounter_fruit(self)

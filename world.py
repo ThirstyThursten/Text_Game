@@ -1,6 +1,7 @@
 import enemies
 import npc
 import random
+import items
 
 class MapTile:
     def __init__(self, x, y):
@@ -13,6 +14,8 @@ class MapTile:
     def modify_player(self, player):
         pass
 
+    def add_item(self, player):
+        pass
 
 class StartTile(MapTile):
     def intro_text(self):
@@ -59,6 +62,45 @@ class EnemyTile(MapTile):
             player.hp = player.hp - self.enemy.damage
             print("Enemy does {} damage. You have {} HP remaining.".format(self.enemy.damage, player.hp))
 
+class ForagingTile(MapTile):
+    def __init__(self, x, y):
+        r = random.random()
+        self.item_claimed = False
+
+        if r < 0.50:
+            self.item = items.Raspberries()
+            self.available_text = "You find some bushes that seems to have " \
+                                    "some Raspberries in them, you forage 'em."
+            self.nofruit_text = "A beautiful part of the forest... " \
+                                        "You must forge onwards."
+        elif r < 0.75:
+            self.item = items.Toadstools()
+            self.available_text = "Some Toadstools grow in the shades of a big tree, " \
+                                    "You pick them up, but you don't know what they do.."
+            self.nofruit_text = "A beautiful part of the forest... " \
+                                        "You must forge onwards."
+        else:
+            self.item = items.BlueBerries()
+            self.available_text = "You see some bushes in front of you, " \
+                                    "some Blueberries thrive in them, " \
+                                    "you foraged them."
+            self.nofruit_text = "A beautiful part of the forest... " \
+                                        "You must forge onwards."
+
+        super().__init__(x, y)
+    def modify_player(self, player):
+        if not self.item_claimed:
+            self.item_claimed = True
+            player.inventory.append(self.item)
+            print(" The {} have been added to your inventory.".format(self.item.name))
+
+    def intro_text(self):
+        nofruit = self.nofruit_text
+        fruit = self.available_text
+        if self.item_claimed:
+            return nofruit
+        else:
+            return fruit
 
 class BoringTile(MapTile):
     def intro_text(self):
@@ -91,7 +133,7 @@ class FindGoldTile(MapTile):
         if not self.gold_claimed:
             self.gold_claimed = True
             player.gold = player.gold + self.gold
-            print("+{} Gold added.".format(self.gold))\
+            print("+{} Gold added.".format(self.gold))
 
     def intro_text(self):
         if self.gold_claimed:
@@ -211,11 +253,12 @@ class BlackSmithTile(MapTile):
 
 
 world_dsl = """
-|EN|EN|VT|EN|FG|
-|BT|  |  |BT|EN|
-|EN|FG|EN|  |MT|
-|MT|EN|ST|FG|EN|
-|FG|  |  |  |FG|
+|EN|EN|VT|EN|EN|BS|
+|BS|  |  |  |BS|EN|
+|FG|MT|FT|FG|EN|FG|
+|EN|FG|EN|  |MT|EN|
+|MT|FT|ST|FG|EN|FT|
+|FG|  |  |  |FG|  |
 """
 def is_dsl_valid(dsl):
     if dsl.count("|ST|") != 1:
@@ -235,7 +278,8 @@ tile_type_dict = {"VT": VictoryTile,
                     "ST": StartTile,
                     "FG": FindGoldTile,
                     "MT": MerchantTile,
-                    "BT": BlackSmithTile,
+                    "BS": BlackSmithTile,
+                    "FT": ForagingTile,
                     "  ": None}
 
 world_map = []
