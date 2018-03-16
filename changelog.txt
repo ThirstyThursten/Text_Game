@@ -1,6 +1,12 @@
-Alpha v.0.2
+Alpha v.1.0
   Dev Notes:
 
+  New Content:
+  - 
+
+
+Alpha v.0.2
+  Dev Notes:
 
   New Content:
   - Added Blacksmith NPC

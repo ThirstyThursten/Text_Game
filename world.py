@@ -171,7 +171,7 @@ class BlackSmithTile(MapTile):
                 self.trade(buyer=player, seller=self.blacksmith)
             elif user_input in ['S', 's']:
                 print("This is what I've got for sale:")
-                self.trade(buyer=blacksmith, seller=player)
+                self.trade(buyer=self.blacksmith, seller=player)
             else:
                 print("Invalid choice!")
 
