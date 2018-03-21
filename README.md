@@ -37,7 +37,7 @@ Example:
 ```
 sudo chmod +x /home/user/Downloads/Text_Game/run_Game_Linux.sh
 ```
-Usually it goed to your home folder:
+Usually it goes to your home folder:
 ```
 sudo chmod +x /home/"username"/Text_Game/run_Game_Linux.sh
 ```
