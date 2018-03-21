@@ -58,7 +58,7 @@ class EnemyTile(MapTile):
             self.enemy = enemies.BrownBear()
             self.alive_text = "You hear a loud thudding and a boisterous growl.. " \
                                 "A bear stands in front of you.."
-            self.dead_text = "You swipe the dust off of your clothes as you feel victorious " \
+            self.dead_text = "You swipe the dust off of your clothes as you feel victorious. " \
                                 "Looking at the dead pile of bear meat.."
             self.loot = items.RawBearMeat()
 
