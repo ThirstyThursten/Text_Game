@@ -2,6 +2,7 @@ import enemies
 import npc
 import random
 import items
+import time
 
 class MapTile:
     def __init__(self, x, y):
@@ -13,6 +14,7 @@ class MapTile:
 
     def modify_player(self, player):
         pass
+
 
     def add_item(self, player):
         pass
@@ -29,38 +31,180 @@ class StartTile(MapTile):
 class EnemyTile(MapTile):
     def __init__(self, x, y):
         r = random.random()
-        if r < 0.30:
+        self.loot_taken = False
+
+        if r < 0.40:
             self.enemy = enemies.Bunny()
             self.alive_text = "A cute little bunny crossed your path! " \
                                 "It should be slain before you can continue.."
             self.dead_text = "The dead bunny is just laying there, bleeding.."
-        elif r < 0.50:
+            self.loot = items.RawBunnyMeat()
+
+        elif r < 0.55:
             self.enemy = enemies.RedFox()
             self.alive_text = "A red fox strides across from you!"
             self.dead_text = "The blood of the dead fox mixes well with its fur.."
+            self.loot = items.RawFoxMeat()
+
         elif r < 0.70:
             self.enemy = enemies.GrayWolf()
             self.alive_text = "You hear a wolf howling, " \
                                 "as it gets ready to attack you.."
             self.dead_text = "You try to catch your breath while standing over " \
                                 "the wolfs bleeding corpse.."
+            self.loot = items.RawWolfMeat()
+
         else:
             self.enemy = enemies.BrownBear()
             self.alive_text = "You hear a loud thudding and a boisterous growl.. " \
                                 "A bear stands in front of you.."
             self.dead_text = "You swipe the dust off of your clothes as you feel victorious " \
                                 "Looking at the dead pile of bear meat.."
+            self.loot = items.RawBearMeat()
 
         super().__init__(x, y)
+
+    def modify_player(self, player):
+        loot_chance = random.random()
+        if self.enemy.is_alive():
+            player.hp = player.hp - self.enemy.damage
+            print("Enemy does {} damage. You have {} HP remaining.".format(self.enemy.damage, player.hp))
+        elif not self.loot_taken and loot_chance < 0.60 and not self.enemy.is_alive():
+            self.loot_taken = True
+            player.inventory.append(self.loot)
+            print(" The {} dropped {} it's been added to your inventory.".format(self.enemy, self.loot.name))
 
     def intro_text(self):
         text = self.alive_text if self.enemy.is_alive() else self.dead_text
         return text
+        #alivetext = self.alive_text
+        #deadtext = self.dead_text
+        #if self.loot_taken:
+        #    return deadtext
+        #else:
+        #    return alivetext
+
+
+class ForagingTile(MapTile):
+    def __init__(self, x, y):
+        r = random.random()
+        self.item_claimed = False
+
+        if r < 0.50:
+            self.item = items.Raspberries()
+            self.available_text = "You find some bushes that seems to have " \
+                                    "some Raspberries in them, you forage 'em."
+            self.nofruit_text = "A beautiful part of the forest... " \
+                                        "You must forge onwards."
+        elif r < 0.75:
+            self.item = items.Toadstools()
+            self.available_text = "Some Toadstools grow in the shades of a big tree, " \
+                                    "You pick them up, but you don't know what they do.."
+            self.nofruit_text = "A beautiful part of the forest... " \
+                                        "You must forge onwards."
+        else:
+            self.item = items.BlueBerries()
+            self.available_text = "You see some bushes in front of you, " \
+                                    "some Blueberries thrive in them, " \
+                                    "you foraged them."
+            self.nofruit_text = "A beautiful part of the forest... " \
+                                        "You must forge onwards."
+
+        super().__init__(x, y)
 
     def modify_player(self, player):
-        if self.enemy.is_alive():
-            player.hp = player.hp - self.enemy.damage
-            print("Enemy does {} damage. You have {} HP remaining.".format(self.enemy.damage, player.hp))
+        if not self.item_claimed:
+            #print("Would you like to (F)orage 'em of (L)eave 'em?")
+            #user_input = input()
+            #if user_input in ['F', 'f']:
+            self.item_claimed = True
+            player.inventory.append(self.item)
+            print(" The {} have been added to your inventory.".format(self.item.name))
+            #else:
+                #return
+
+    def intro_text(self):
+        nofruit = self.nofruit_text
+        fruit = self.available_text
+        if self.item_claimed:
+            return nofruit
+        else:
+            return fruit
+
+class CookingTile(MapTile):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+
+    def intro_text(self):
+        return """
+        You find a fresh firepit in the forest, it can be rekindled..
+        """
+
+    def check_cook(self, player):
+        while True:
+            print("Would you like to cook some meat? (Y)es or (N)o?")
+            user_input = input()
+            if user_input in ['N', 'n']:
+                return
+            elif user_input in ['Y', 'y']:
+                self.cook(player)
+            else:
+                print("Invalid Choice!")
+
+    def cook(self, player):
+        Raw_Meat = [item for item in player.inventory
+                    if isinstance(item, items.RawMeat)]
+        if not Raw_Meat:
+            print("You don't have any Raw meat!")
+            return
+
+        print("Choose an item to cook: ")
+        for i, item in enumerate(Raw_Meat, 1):
+
+            print("{}. {}".format(i, item.name))
+
+        valid = False
+        while not valid:
+            user_input = input("Choose an item or press Q to exit: ")
+            if user_input in ['Q', 'q']:
+                return
+            else:
+                try:
+                    choice = int(user_input)
+                    to_cook = Raw_Meat[int(choice) - 1]
+                    if to_cook.id == 1:
+                        cooked = items.CookedBunnyMeat()
+                        player.inventory.remove(to_cook)
+                        player.inventory.append(cooked)
+                        print("Your food is cooking, have patience..")
+                        time.sleep(2)
+                        print("Done! It looks delicious!")
+                    elif to_cook.id == 2:
+                        cooked = items.CookedFoxMeat()
+                        player.inventory.remove(to_cook)
+                        player.inventory.append(cooked)
+                        print("Your food is cooking, have patience..")
+                        time.sleep(3)
+                        print("Done! It looks delicious!")
+                    elif to_cook.id == 3:
+                        cooked = items.CookedWolfMeat()
+                        player.inventory.remove(to_cook)
+                        player.inventory.append(cooked)
+                        print("Your food is cooking, have patience..")
+                        time.sleep(4)
+                        print("Done! It looks delicious!")
+                    elif to_cook.id == 4:
+                        cooked = items.CookedBearMeat()
+                        player.inventory.remove(to_cook)
+                        player.inventory.append(cooked)
+                        print("Your food is cooking, have patience..")
+                        time.sleep(5)
+                        print("Done! It looks delicious!")
+                    else:
+                        print("It's not yet working.. =(")
+                    valid = True
+                except (ValueError, IndexError):
+                    print("Invalid choice!")
 
 class ForagingTile(MapTile):
     def __init__(self, x, y):
@@ -157,10 +301,12 @@ class MerchantTile(MapTile):
             if user_input in ['Q', 'q']:
                 return
             elif user_input in ['B', 'b']:
+                print("You can spend: {} Gold.".format(player.gold))
                 print("Here's whats available to buy: ")
                 self.trade(buyer=player, seller=self.merchant)
             elif user_input in ['S', 's']:
-                print("Here's whats available to sell: ")
+                print("This is what I can afford: {} Gold.".format(self.merchant.gold))
+                print("And here's what you can sell: ")
                 self.trade(buyer=self.merchant, seller=player)
             else:
                 print("Invalid choice!")
@@ -209,9 +355,12 @@ class BlackSmithTile(MapTile):
             if user_input in ['Q', 'q']:
                 return
             elif user_input in ['B', 'b']:
+                print("Your Gold: {} Gold.".format(player.gold))
                 print("Here's what I got available for purchase: ")
                 self.trade(buyer=player, seller=self.blacksmith)
             elif user_input in ['S', 's']:
+                print("Here's how much I have to spend: {} Gold.".format(self.blacksmith.gold))
+                print("And this is what you can sell:")
                 print("This is what I've got for sale:")
                 self.trade(buyer=self.blacksmith, seller=player)
             else:
@@ -253,13 +402,16 @@ class BlackSmithTile(MapTile):
 
 
 world_dsl = """
-|EN|EN|VT|EN|EN|BS|
-|BS|  |  |  |BS|EN|
-|FG|MT|FT|FG|EN|FG|
-|EN|FG|EN|  |MT|EN|
-|MT|FT|ST|FG|EN|FT|
-|FG|  |  |  |FG|  |
+|EN|BS|  |VT|EN|EN|EN|
+|MT|EN|  |  |EN|EN|BS|
+|EN|CT|EN|FG|  |  |EN|
+|EN|  |  |MT|EN|CT|FG|
+|FG|EN|FT|FG|FT|EN|MT|
+|EN|FG|EN|  |FG|  |CT|
+|CT|EN|ST|EN|EN|FT|EN|
+|FG|  |  |  |FG|  |FT|
 """
+
 def is_dsl_valid(dsl):
     if dsl.count("|ST|") != 1:
         return False
@@ -280,6 +432,7 @@ tile_type_dict = {"VT": VictoryTile,
                     "MT": MerchantTile,
                     "BS": BlackSmithTile,
                     "FT": ForagingTile,
+                    "CT": CookingTile,
                     "  ": None}
 
 world_map = []

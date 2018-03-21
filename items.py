@@ -5,7 +5,44 @@ class Weapon:
     def __str__(self):
         return self.name
 
-class Rock(Weapon):
+class Crafting:
+    def __init__(self):
+        raise NotImplementedError("Do not create raw Crafting items.")
+
+    def __str__(self):
+        self.name
+
+class Consumable:
+    def __init__(self):
+        raise NotImplementedError("Do not create raw Consumable objects.")
+
+    def __str__ (self):
+        return "{} (+{} HP)".format(self.name, self.healing_value)
+
+class Craftable:
+    def __init__(self):
+        raise NotImplementedError("Do not create raw Craftable items.")
+
+    def __str__(self):
+        return self.name
+
+class RawMeat:
+    def __init__(self):
+        raise NotImplementedError("Don't create raw RawMeat items.")
+
+    def __str__ (self):
+        return "{} (+{} HP)".format(self.name, self.healing_value)
+
+class CookedMeat:
+    def __init__(self):
+        raise NotImplementedError("Don't create any raw CookedMeat items.")
+
+    def __str__ (self):
+        return "{} (+{} HP)".format(self.name, self.healing_value)
+
+
+
+class Rock(Weapon, Crafting):
     def __init__(self):
         self.name = "Rock"
         self.description = "A fist-sized rock, suitable for bludgeoning."
@@ -44,12 +81,7 @@ class CrossBow(Weapon):
         self.damage = 35
         self.value = 120
 
-class Consumable:
-    def __init__(self):
-        raise NotImplementedError("Do not create raw Consumable objects.")
 
-    def __str__ (self):
-        return "{} (+{} HP)".format(self.name, self.healing_value)
 
 class CrustyBread(Consumable):
     def __init__(self):
@@ -74,3 +106,72 @@ class Toadstools(Consumable):
         self.name = "Toadstools"
         self.healing_value = -5
         self.value = 10
+
+
+
+class RawBunnyMeat(RawMeat, Consumable):
+    def __init__(self):
+        self.name = "Raw Bunny meat"
+        self.healing_value = 10
+        self.value = 20
+        self.id = 1
+
+class RawFoxMeat(RawMeat, Consumable):
+    def __init__(self):
+        self.name = "Raw Fox meat"
+        self.healing_value = 15
+        self.value = 25
+        self.id = 2
+
+class RawWolfMeat(RawMeat, Consumable):
+    def __init__(self):
+        self.name = "Wolf meat"
+        self.healing_value = 20
+        self.value = 30
+        self.id = 3
+
+class RawBearMeat(RawMeat, Consumable):
+    def __init__(self):
+        self.name = "Bear meat"
+        self.healing_value = 35
+        self.value = 40
+        self.id = 4
+
+class CookedBunnyMeat(CookedMeat, Consumable):
+    def __init__(self):
+        self.name = "Cooked Bunny meat"
+        self.healing_value = 25
+        self.value = 30
+        self.id = 5
+
+class CookedFoxMeat(CookedMeat, Consumable):
+    def __init__(self):
+        self.name = "Cooked Fox meat"
+        self.healing_value = 30
+        self.value = 35
+        self.id = 6
+
+class CookedWolfMeat(CookedMeat, Consumable):
+    def __init__(self):
+        self.name = "Cooked Wolf meat"
+        self.healing_value = 35
+        self.value = 40
+        self.id = 7
+
+class CookedBearMeat(CookedMeat, Consumable):
+    def __init__(self):
+        self.name = "Cooked Bear meat"
+        self.healing_value = 50
+        self.value = 50
+        self.id = 8
+
+
+class FirePit(Craftable):
+    def __init__(self):
+        self.name = "Firepit"
+
+
+
+class Stick(Crafting):
+    def __init__(self):
+        self.name = "Stick"
