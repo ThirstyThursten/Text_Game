@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from player import Player
 import world
+#import crafting
 
 
 def play():
@@ -34,13 +35,14 @@ def get_available_actions(room, player):
     actions = OrderedDict()
     print("Choose an action: ")
     if player.inventory:
-        action_adder(actions, 'i', player.print_inventory, "Print Inventory")
+        action_adder(actions, 'i', player.print_inventory, "Your Inventory")
     if isinstance(room, world.MerchantTile):
         action_adder(actions, 't', player.trade, "Trade")
     if isinstance(room, world.BlackSmithTile):
         action_adder(actions, 't', player.trade, "Trade")
     if isinstance(room, world.EnemyTile) and room.enemy.is_alive():
         action_adder(actions, 'a', player.attack, "Attack")
+
     else:
         if world.tile_at(room.x, room.y - 1):
             action_adder(actions, 'n', player.move_north, "Go north")
@@ -52,6 +54,10 @@ def get_available_actions(room, player):
             action_adder(actions, 'w', player.move_west, "Go west")
     if player.hp < 150:
         action_adder(actions, 'h', player.heal, "Heal")
+    if isinstance(room, world.CookingTile):
+        action_adder(actions, 'c', player.cook, "Cook")
+    #if crafting.craft:
+        #action_adder(actions, 'craft', player.craft, "Craft")
 
     return actions
 
