@@ -8,8 +8,8 @@ class Player:
         self.inventory = [items.Rock(),
                             items.Dagger(),
                             items.CrustyBread(),
-                            items.RawBunnyMeat(),
-                            items.RawFoxMeat()]
+                            items.Raspberries()
+                            ]
         self.x = world.start_tile_location[0]
         self.y = world.start_tile_location[1]
         self.hp = 150
@@ -111,4 +111,3 @@ class Player:
     def cook(self):
         room = world.tile_at(self.x, self.y)
         room.check_cook(self)
-
