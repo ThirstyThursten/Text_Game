@@ -46,4 +46,5 @@ sudo chmod +x /home/"username"/Text_Game/run_Game_Linux.sh
 
 
 ### Windows:
-Coming soon...
+ Check the [releases](https://github.com/ThirstyThursten/Text_Game/releases) for Windows Binaries/Exectables!
+
