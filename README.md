@@ -11,7 +11,7 @@ sudo apt-get install pyhton3
 
 Make the run_Game_Linux.sh executable:
 ```
-sudo chmod +x 'path-to-gitclone'
+sudo chmod +x 'path-to-gitclone'/run_Game_Linux.sh
 ```
 
 Example:
