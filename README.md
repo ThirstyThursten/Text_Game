@@ -5,6 +5,7 @@ My own made Python Text based Adventure game
 
 ### Linux:
 1. Git Clone project:
+
 Open a terminal and type:
 ```
 git clone https://github.com/ThirstyThursten/Text_Game.git
