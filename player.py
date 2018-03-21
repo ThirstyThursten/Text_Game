@@ -111,3 +111,4 @@ class Player:
     def cook(self):
         room = world.tile_at(self.x, self.y)
         room.check_cook(self)
+

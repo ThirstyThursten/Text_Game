@@ -15,6 +15,10 @@ class MapTile:
     def modify_player(self, player):
         pass
 
+
+    def add_item(self, player):
+        pass
+
 class StartTile(MapTile):
     def intro_text(self):
         return """
@@ -202,6 +206,45 @@ class CookingTile(MapTile):
                 except (ValueError, IndexError):
                     print("Invalid choice!")
 
+class ForagingTile(MapTile):
+    def __init__(self, x, y):
+        r = random.random()
+        self.item_claimed = False
+
+        if r < 0.50:
+            self.item = items.Raspberries()
+            self.available_text = "You find some bushes that seems to have " \
+                                    "some Raspberries in them, you forage 'em."
+            self.nofruit_text = "A beautiful part of the forest... " \
+                                        "You must forge onwards."
+        elif r < 0.75:
+            self.item = items.Toadstools()
+            self.available_text = "Some Toadstools grow in the shades of a big tree, " \
+                                    "You pick them up, but you don't know what they do.."
+            self.nofruit_text = "A beautiful part of the forest... " \
+                                        "You must forge onwards."
+        else:
+            self.item = items.BlueBerries()
+            self.available_text = "You see some bushes in front of you, " \
+                                    "some Blueberries thrive in them, " \
+                                    "you foraged them."
+            self.nofruit_text = "A beautiful part of the forest... " \
+                                        "You must forge onwards."
+
+        super().__init__(x, y)
+    def modify_player(self, player):
+        if not self.item_claimed:
+            self.item_claimed = True
+            player.inventory.append(self.item)
+            print(" The {} have been added to your inventory.".format(self.item.name))
+
+    def intro_text(self):
+        nofruit = self.nofruit_text
+        fruit = self.available_text
+        if self.item_claimed:
+            return nofruit
+        else:
+            return fruit
 
 class BoringTile(MapTile):
     def intro_text(self):
@@ -318,6 +361,7 @@ class BlackSmithTile(MapTile):
             elif user_input in ['S', 's']:
                 print("Here's how much I have to spend: {} Gold.".format(self.blacksmith.gold))
                 print("And this is what you can sell:")
+                print("This is what I've got for sale:")
                 self.trade(buyer=self.blacksmith, seller=player)
             else:
                 print("Invalid choice!")
