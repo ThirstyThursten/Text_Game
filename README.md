@@ -14,10 +14,12 @@ If so skip to step 3.
 
 If that's not the case install it by the following step:
 
+
 2. Install Python3:
 ```
 sudo apt-get install pyhton3
 ```
+
 
 3. Make the run_Game_Linux.sh executable:
 ```
@@ -29,7 +31,9 @@ Example:
 sudo chmod +x /home/user/Downloads/Text_Game/run_Game_Linux.sh
 ```
 
+
 4. And double click ```run_Game_Linux.sh``` and if prompted click ```open in Terminal```.
+
 
 ### Windows:
 Coming soon...
