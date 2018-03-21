@@ -9,7 +9,9 @@ My own made Python Text based Adventure game
 python3 --version
 ```
 You should see a version number like ```3.5.2```.
+
 If so skip to step 3.
+
 If that's not the case install it by the following step:
 
 2. Install Python3:
