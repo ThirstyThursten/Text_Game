@@ -125,14 +125,14 @@ class RawFoxMeat(RawMeat, Consumable):
 
 class RawWolfMeat(RawMeat, Consumable):
     def __init__(self):
-        self.name = "Wolf meat"
+        self.name = "Raw Wolf meat"
         self.healing_value = 20
         self.value = 30
         self.id = 3
 
 class RawBearMeat(RawMeat, Consumable):
     def __init__(self):
-        self.name = "Bear meat"
+        self.name = "Raw Bear meat"
         self.healing_value = 35
         self.value = 40
         self.id = 4
