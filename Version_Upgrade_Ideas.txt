@@ -1,14 +1,7 @@
-Alpha v.1.0
- Dev Notes:
-
- New Content:
- - Bigger world_map
- - Adding Fruit foraging/finding functions
- - Adding Fruit foraging/finding tiles to world_map
-
- Long Term:
+ Long Term Ideas:
  - New NPCs (Fisherman?)
  - Choices Enemies: (Kill? Run?)
  - Fisherman sell bait for hunting?
- - Enemies drop loot
  - Crafting
+ - Craft firepit to cook/rewrite cooking script
+ - [x] Cooking

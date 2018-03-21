@@ -1,3 +1,14 @@
+Alpha v.1.2
+  Dev Notes:
+  - Small changes and improvements
+
+  New Content:
+  - Enemy Loot is now Raw meat and is cookable
+  - CookingTile --> Cook meat to increase Healing Value
+  - World_map is even bigger and more advanced.
+  - New items Cooked meat
+
+
 Alpha v.1.1
   Dev Notes:
 

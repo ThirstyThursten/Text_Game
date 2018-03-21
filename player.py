@@ -1,12 +1,15 @@
 import items
 import world
+#import crafting
 
 
 class Player:
     def __init__(self):
         self.inventory = [items.Rock(),
                             items.Dagger(),
-                            items.CrustyBread()]
+                            items.CrustyBread(),
+                            items.RawBunnyMeat(),
+                            items.RawFoxMeat()]
         self.x = world.start_tile_location[0]
         self.y = world.start_tile_location[1]
         self.hp = 150
@@ -30,8 +33,9 @@ class Player:
             print("You don't have any items to heal you!")
             return
 
+        print("Your HP is: {}".format(self.hp))
+        print("Choose an item to use to heal:")
         for i, item in enumerate(consumables, 1):
-            print("Choose an item to use to heal:")
             print("{}. {}".format(i, item))
 
         valid = False
@@ -46,6 +50,15 @@ class Player:
             except (ValueError, IndexError):
                 print("Invalid choice, try again.")
 
+### CRAFT FUNCTION (WIP)
+#    def craft(self):
+#        craftables = [item for item in self.inventory
+#                        if isinstance(item, items.Crafting)]
+#            print("You don't have any Craftable items!")
+#            return
+
+#        firepit =
+###
 
     def most_powerful_weapon(self):
         max_damage = 0
@@ -95,5 +108,6 @@ class Player:
         room = world.tile_at(self.x, self.y)
         room.encounter_fruit(self)
 
-    def drop_loot(self):
+    def cook(self):
         room = world.tile_at(self.x, self.y)
+        room.check_cook(self)

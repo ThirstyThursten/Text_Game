@@ -1,2 +1,4 @@
 *.pyc
 *.pyo
+crafting.py
+craft.py
