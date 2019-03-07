@@ -24,7 +24,7 @@ If that's not the case install it by the following step:
 
 3. Install Python3:
 ```
-sudo apt-get install pyhton3
+sudo apt-get install python3
 ```
 
 
